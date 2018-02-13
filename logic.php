@@ -12,13 +12,21 @@ $haveResults = false;
 //     $searchTerm = '';
 // }
 
-$searchTerm = isset($_GET['searchTerm']) ? $_GET['searchTerm'] : '';
+$searchTerm = isset($_POST['searchTerm']) ? $_POST['searchTerm'] : '';
 
 // $searchTerm = $_GET['searchTerm'] ?? '';
 
+$caseSensitive = isset($_POST['caseSensitive']) ? true : false;
+
 if ($searchTerm) {
     foreach ($books as $title => $book) {
-        if ($title != $searchTerm) {
+        if ($caseSensitive) {
+            $match = $title == $searchTerm;
+        } else {
+            $match = strtolower($title) == strtolower($searchTerm);
+        }
+
+        if (!$match) {
             unset($books[$title]);
         }
     }

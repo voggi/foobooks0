@@ -22,9 +22,13 @@ require('logic.php');
         </div>
 
         <div class="row">
-            <form method="GET" action="index.php">
+            <form method="POST" action="index.php">
                 <label>Search for a book:
                     <input type="text" name="searchTerm" value="<?=sanitize($searchTerm) ?>">
+                </label>
+
+                <label>Case sensitive:
+                    <input type="checkbox" name="caseSensitive" value="1" <?=($caseSensitive) ? 'checked' : ''?>>
                 </label>
 
                 <input type="submit" value="Search">
