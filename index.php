@@ -22,19 +22,41 @@ require('logic.php');
         </div>
 
         <div class="row">
-            <div class="card-deck">
-                <?php foreach ($books as $title => $book): ?>
-                    <div class="card">
-                        <img class="card-img-top" src="<?=$book['cover_url'] ?>" alt="Cover photo for the book <?=$title ?>">
-                        
-                        <div class="card-body">
-                            <h5 class="card-title"><?=$title ?></h5>
+            <form method="GET" action="index.php">
+                <label>Search for a book:
+                    <input type="text" name="searchTerm" value="<?=sanitize($searchTerm) ?>">
+                </label>
 
-                            <p class="card-text"><?=$book['author'] ?></p>
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
+        <div class="row">
+            <?php if ($searchTerm): ?>
+                <p>You searched for <em><?=sanitize($searchTerm) ?></em></p>
+            <?php else: ?>
+                <p>Welcome to to foobooks0; enter a title above to search our library</p>
+            <?php endif; ?>
+        </div>
+
+        <div class="row">
+            <?php if ($haveResults): ?>
+                <div class="card-deck">
+                    <?php foreach ($books as $title => $book): ?>
+                        <div class="card">
+                            <img class="card-img-top" src="<?=$book['cover_url'] ?>" alt="Cover photo for the book <?=$title ?>">
+                            
+                            <div class="card-body">
+                                <h5 class="card-title"><?=$title ?></h5>
+
+                                <p class="card-text"><?=$book['author'] ?></p>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach ?>
-            </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php elseif ($searchTerm): ?>
+                <p>No Results</p>
+            <?php endif; ?>
         </div>
     </div>
 </body>
