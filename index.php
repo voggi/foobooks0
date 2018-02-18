@@ -1,6 +1,6 @@
 <?php
 require('helpers.php');
-require('logic.php');
+require('index-logic.php');
 ?>
 
 <!DOCTYPE html>
@@ -22,9 +22,13 @@ require('logic.php');
         </div>
 
         <div class="row">
+            <a href="/all">View all books.</a>
+        </div>
+
+        <div class="row">
             <form method="POST" action="index.php">
                 <label>Search for a book:
-                    <input type="text" name="searchTerm" value="<?=sanitize($searchTerm) ?>">
+                    <input type="text" name="searchTerm" value="<?=$form->prefill('searchTerm', 'The Bell Jar'); ?>">
                 </label>
 
                 <label>Case sensitive:
@@ -32,21 +36,31 @@ require('logic.php');
                 </label>
 
                 <input type="submit" value="Search">
+
+                <?php if ($form->hasErrors) : ?>
+                    <div class="alert alert-danger">
+                        <ul>
+                            <?php foreach ($errors as $error) : ?>
+                                <li><?=$error; ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
             </form>
         </div>
 
         <div class="row">
-            <?php if ($searchTerm): ?>
+            <?php if ($searchTerm && !$form->hasErrors) : ?>
                 <p>You searched for <em><?=sanitize($searchTerm) ?></em></p>
-            <?php else: ?>
+            <?php else : ?>
                 <p>Welcome to to foobooks0; enter a title above to search our library</p>
             <?php endif; ?>
         </div>
 
         <div class="row">
-            <?php if ($haveResults): ?>
+            <?php if ($haveResults) : ?>
                 <div class="card-deck">
-                    <?php foreach ($books as $title => $book): ?>
+                    <?php foreach ($books as $title => $book) : ?>
                         <div class="card">
                             <img class="card-img-top" src="<?=$book['cover_url'] ?>" alt="Cover photo for the book <?=$title ?>">
                             
@@ -58,9 +72,13 @@ require('logic.php');
                         </div>
                     <?php endforeach; ?>
                 </div>
-            <?php elseif ($searchTerm): ?>
+            <?php elseif ($searchTerm && !$form->hasErrors) : ?>
                 <p>No Results</p>
             <?php endif; ?>
+        </div>
+
+        <div class="row">
+            <?php require('footer.php'); ?>
         </div>
     </div>
 </body>
